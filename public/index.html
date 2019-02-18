@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Live Phish Controller </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    </head>
+
+    <style>
+
+        html, body {
+            width: 100%;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+
+    <body>
+        <div class="container">
+            <button onclick="send('play-pause')">Play/Pause</button>
+            <button onclick="send('next-song')">Next Song</button>
+            <button onclick="send('previous-song')">Previous Song</button>
+        </div>
+    </body>
+
+    <script>
+        function send(control) {
+            fetch('/controller', {
+                method: 'POST',
+                body: JSON.stringify({
+                    control: control
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then( res => res.json())
+            .then( response => console.log("Success"))
+            .catch( error => console.error(error)); 
+        }
+    </script>
+</html>
