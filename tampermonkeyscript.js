@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  try to take over the world!
-// @author       You
+// @author       Zachary Donato
 // @match        http://plus.livephish.com/*
 // @grant        none
 // ==/UserScript==
@@ -27,18 +27,33 @@
     var evtSrc = new EventSource("http://localhost:9000/livephish-controller");
 
     evtSrc.onmessage = function (e) {
-        switch (e.data) {
-            case '"play-pause"':
+        let data = JSON.parse(e.data);
+
+        switch (data.control) {
+            case "play-pause":
                 playPause();
                 break;
-            case '"next-song"':
+            case "next-song":
                 nextSong();
                 break;
-            case '"previous-song"':
+            case "previous-song":
                 previousSong();
                 break;
             default:
                 break;
         }
     }
+
+        let currentSong = document.querySelector('.track-title').textContent;
+        fetch('/current-song', {
+            method: 'POST',
+            body: JSON.stringify({song: currentSong}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then( res => res.json())
+            .then( response => console.log("Success"))
+            .catch( error => console.error(error));
+
 })();

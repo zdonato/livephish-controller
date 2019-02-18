@@ -38,5 +38,15 @@
             .then( response => console.log("Success"))
             .catch( error => console.error(error)); 
         }
+
+        function getCurrentSong() {
+            fetch('/current-song')
+            .then( res => res.json())
+            .then( response => {
+                console.log(response);
+            })
+            .catch( error => console.error(error)); 
+        }
+
     </script>
 </html>
